@@ -16,6 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+var confDB = {
+    initialize: function(){
+        //variable existe db
+        var existe_db;
+        existe_db=window.localStorage.getItem("existe_db");
+        if(existe_db==0){
+          navigator.notification.confirm(
+            'La base de datos no existe', // message
+            this.onConfirm,               // callback to invoke with index of buttom pressed
+            'Base de datos',              // title
+            ['Crear','Salir']             //butonLabels
+          );
+        }
+    },
+
+    onConfirm:function (buttonIndex) {
+        if(buttonIndex==1){
+            window.localStorage.setItem("existe_db",1);
+        }
+    }
+};
+ 
 var app = {
     // Application Constructor
     initialize: function() {
@@ -37,13 +60,11 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
         console.log('Received Event: ' + id);
+
+        //Lanzamos la configuración de la base de datos
+        confDB.initialize();
     }
 };
+
+app.initialize();
