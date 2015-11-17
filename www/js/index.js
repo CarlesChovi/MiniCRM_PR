@@ -16,26 +16,91 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+ var cargarDB ={
+    db:"",
+    initialize: function(){
+        //generamos el conector
+        this.db = window.openDatabase("localDB","1.0","Base de datos de prueba",2*1024*1024);
+        this.cargaDB();
+    },
+    cargaDB: function(){
+        console.log("Cargar la base de datos;");
+        //transaccion
+        this.db.transaction(this.mostrarDB,this.mostrarDBerror);        
+    },
+    mostrarDB: function(tx){
+        var sql = "select * from usuarios";
+        console.log("Lanzamos la consulta");
+        tx.executeSql(sql,[],
+            //Función del resultado OK
+            function(tx,result){
+                console.log("Se ha producido la consulta con exito");
+                if(result.rows.length>0){
+                    for(var i = 0;i<result.rows.length;i++){
+                        var fila = result.rows.item(i);
+                        //Aquí actualizaria el html automaticamente
+                        console.log("Row "+i+" nombre: "+fila.nombre);
+                        $("#listaContactos ul").append("<li id='"+fila.id+"' class='listaContactos'><a href='listas.html' data-ajax='false'>"+fila.nombre+"</a></li>").listview('refresh');
+                    }
+                }
+            },
+            function(tx,error){
+                this.mostrarDBerror;
+            }
+            );
+
+            
+    },
+    mostrarDBerror: function(err){
+        console.log("Se ha producido un error en la creacion de la base de datos: "+error.code);
+    }
+
+};
 
 var confDB = {
+    existe_db:null,
+    db:"",
     initialize: function(){
         //variable existe db
-        var existe_db;
-        existe_db=window.localStorage.getItem("existe_db");
-        if(existe_db==0){
-          navigator.notification.confirm(
-            'La base de datos no existe', // message
-            this.onConfirm,               // callback to invoke with index of buttom pressed
-            'Base de datos',              // title
-            ['Crear','Salir']             //butonLabels
-          );
+        existe_db = window.localStorage.getItem("existe_db");
+        //creamos el enlace con la base de datos
+        this.db = window.openDatabase("localDB","1.0","Base de datos de prueba",2*1024*1024);
+        //preguntamos si es necesario crear la base de datos
+        if(existe_db==null){
+            console.log("Creamos la base de datos");
+            this.createDB();
+        }else{
+            console.log("Cargamos la base de datoos");
+            cargarDB.initialize();
         }
     },
 
-    onConfirm:function (buttonIndex) {
-        if(buttonIndex==1){
-            window.localStorage.setItem("existe_db",1);
-        }
+    createDB: function(){
+        console.log("No existe la base de datos");
+        window.localStorage.setItem("existe_db",1);
+
+        this.db.transaction(this.createLocalDB,this.createDBError,this.createDBSucc);        
+    },
+    createLocalDB: function(tx){
+        var sql="create table if not exists usuarios ("+
+            "id integer primary key autoincrement,"+
+            "nombre varchar(50),"+
+            "apellidos varchar(256),"+
+            "cargo varchar(128),"+
+            "email varchar(64) )";
+        
+        tx.executeSql(sql);
+
+        sql = "insert into usuarios(id,nombre,apellidos,cargo,email)"+
+        "values(null,'Carles','Choví Estarelles','Alumno','46chovi9@gmail.com')";
+        tx.executeSql(sql);
+    },
+    createDBError: function(err){
+        console.log("Se ha producido un error en la creacion de la base de datos: "+error.code);
+    },
+    createDBSucc: function(){
+        console.log("Se ha generado la base de datos con exito");
+        window.localStorage.setItem("existe_db",1);
     }
 };
  
@@ -61,7 +126,6 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
-
         //Lanzamos la configuración de la base de datos
         confDB.initialize();
     }

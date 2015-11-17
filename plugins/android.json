@@ -34,6 +34,9 @@
         },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.phonegap.miniCRM"
         }
     },
     "dependent_plugins": {}
