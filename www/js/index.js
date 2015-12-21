@@ -87,7 +87,8 @@ var confDB = {
             "nombre varchar(50),"+
             "apellidos varchar(256),"+
             "cargo varchar(128),"+
-            "email varchar(64) )";
+            "email varchar(64),"+
+            "ultimos integer(1) )";
         
         tx.executeSql(sql);
 
