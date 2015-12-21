@@ -39,8 +39,8 @@
                     for(var i = 0;i<result.rows.length;i++){
                         var fila = result.rows.item(i);
                         //Aquí actualizaria el html automaticamente
-                        console.log("Row "+i+" nombre: "+fila.nombre);
-                        $("#listaContactos ul").append("<li id='"+fila.id+"' class='listaContactos'><a href='listas.html' data-ajax='false'>"+fila.nombre+"</a></li>").listview('refresh');
+                        //console.log("Row "+i+" nombre: "+fila.nombre);
+                        $("#listaContactos ul").append("<li id='"+fila.id+"' class='listaContactos'><a href='datos.html' data-ajax='false'><img src='./img/iconUser.png'/>"+fila.nombre+"</br>"+fila.apellidos+"</br>"+fila.cargo+"</a></li>").listview('refresh');
                     }
                 }
             },
@@ -77,7 +77,7 @@ var confDB = {
 
     createDB: function(){
         console.log("No existe la base de datos");
-        window.localStorage.setItem("existe_db",1);
+        //window.localStorage.setItem("existe_db",1);
 
         this.db.transaction(this.createLocalDB,this.createDBError,this.createDBSucc);        
     },
@@ -94,6 +94,10 @@ var confDB = {
         sql = "insert into usuarios(id,nombre,apellidos,cargo,email)"+
         "values(null,'Carles','Choví Estarelles','Alumno','46chovi9@gmail.com')";
         tx.executeSql(sql);
+
+        sql = "insert into usuarios(id,nombre,apellidos,cargo,email)"+
+        "values(null,'David','Alòs Bosch','Alumno','ab95david@gmail.com')";
+        tx.executeSql(sql);
     },
     createDBError: function(err){
         console.log("Se ha producido un error en la creacion de la base de datos: "+error.code);
@@ -107,6 +111,7 @@ var confDB = {
 var app = {
     // Application Constructor
     initialize: function() {
+        //Lanza el evento de phonegap(bundEvents)
         this.bindEvents();
     },
     // Bind Event Listeners
@@ -114,6 +119,7 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
+        //Esperaremos hasta que el dispositivo este listo y lanzaremos otro método(onDeviceReady)
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
