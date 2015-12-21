@@ -92,12 +92,12 @@ var confDB = {
         
         tx.executeSql(sql);
 
-        sql = "insert into usuarios(id,nombre,apellidos,cargo,email)"+
-        "values(null,'Carles','Choví Estarelles','Alumno','46chovi9@gmail.com')";
+        sql = "insert into usuarios(id,nombre,apellidos,cargo,email,ultimos)"+
+        "values(null,'Carles','Choví Estarelles','Alumno','46chovi9@gmail.com',0)";
         tx.executeSql(sql);
 
-        sql = "insert into usuarios(id,nombre,apellidos,cargo,email)"+
-        "values(null,'David','Alòs Bosch','Alumno','ab95david@gmail.com')";
+        sql = "insert into usuarios(id,nombre,apellidos,cargo,email,ultimos)"+
+        "values(null,'David','Alòs Bosch','Alumno','ab95david@gmail.com',1)";
         tx.executeSql(sql);
     },
     createDBError: function(err){
