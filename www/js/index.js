@@ -29,7 +29,7 @@
         this.db.transaction(this.mostrarDB,this.mostrarDBerror);        
     },
     mostrarDB: function(tx){
-        var sql = "select * from usuarios";
+        var sql = "select * from usuarios ORDER BY ultimos DESC";
         console.log("Lanzamos la consulta");
         tx.executeSql(sql,[],
             //Función del resultado OK
@@ -97,7 +97,11 @@ var confDB = {
         tx.executeSql(sql);
 
         sql = "insert into usuarios(id,nombre,apellidos,cargo,email,ultimos)"+
-        "values(null,'David','Alòs Bosch','Alumno','ab95david@gmail.com',1)";
+        "values(null,'David','Alòs Bosch','Alumno','ab95david@gmail.com',0)";
+        tx.executeSql(sql);
+
+        sql = "insert into usuarios(id,nombre,apellidos,cargo,email,ultimos)"+
+        "values(null,'Pepe','Alòs Bosch','Alumno','ab95david@gmail.com',1)";
         tx.executeSql(sql);
     },
     createDBError: function(err){
