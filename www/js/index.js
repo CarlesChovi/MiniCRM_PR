@@ -29,7 +29,7 @@
         this.db.transaction(this.mostrarDB,this.mostrarDBerror);        
     },
     mostrarDB: function(tx){
-        var sql = "select * from usuarios";
+        var sql = "select * from usuarios ORDER BY ultimos DESC";
         console.log("Lanzamos la consulta");
         tx.executeSql(sql,[],
             //Función del resultado OK
@@ -87,24 +87,25 @@ var confDB = {
             "nombre varchar(50),"+
             "apellidos varchar(256),"+
             "cargo varchar(128),"+
-            "email varchar(64) )";
+            "email varchar(64),"+
+            "ultimos integer(1) )";
         
         tx.executeSql(sql);
 
-        sql = "insert into usuarios(id,nombre,apellidos,cargo,email)"+
-        "values(null,'Carles','Choví Estarelles','Alumno','46chovi9@gmail.com')";
+        sql = "insert into usuarios(id,nombre,apellidos,cargo,email,ultimos)"+
+        "values(null,'Carles','Choví Estarelles','Alumno','46chovi9@gmail.com',0)";
         tx.executeSql(sql);
 
-        sql = "insert into usuarios(id,nombre,apellidos,cargo,email)"+
-        "values(null,'David','Alòs Bosch','Alumno','ab95david@gmail.com')";
+        sql = "insert into usuarios(id,nombre,apellidos,cargo,email,ultimos)"+
+        "values(null,'David','Alòs Bosch','Alumno','ab95david@gmail.com',0)";
         tx.executeSql(sql);
 
-        sql = "insert into usuarios(id,nombre,apellidos,cargo,email)"+
-        "values(null,'Julian','Molina','Alumno','wodyjuli@gmail.com')";
+        sql = "insert into usuarios(id,nombre,apellidos,cargo,email,ultimos)"+
+        "values(null,'Julian','Molina','Alumno','wodyjuli@gmail.com',1)";
         tx.executeSql(sql);
 
-        sql = "insert into usuarios(id,nombre,apellidos,cargo,email)"+
-        "values(null,'Iván','Estruch','Alumno','estruch@gmail.com')";
+        sql = "insert into usuarios(id,nombre,apellidos,cargo,email,ultimos)"+
+        "values(null,'Iván','Estruch','Alumno','estruch@gmail.com',1)";
         tx.executeSql(sql);
     },
     createDBError: function(err){
