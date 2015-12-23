@@ -24,7 +24,7 @@
         this.cargaDB();
     },
     cargaDB: function(){
-        console.log("Cargar la base de datos;");
+        console.log("Cargar la base de datos;"); 
         //transaccion
         this.db.transaction(this.mostrarDB,this.mostrarDBerror);        
     },
@@ -38,9 +38,16 @@
                 if(result.rows.length>0){
                     for(var i = 0;i<result.rows.length;i++){
                         var fila = result.rows.item(i);
-                        //Aquí actualizaria el html automaticamente
-                        //console.log("Row "+i+" nombre: "+fila.nombre);
-                        $("#listaContactos ul").append("<li id='"+fila.id+"' class='listaContactos'><a href='datos.html' data-ajax='false'><img src='./img/iconUser.png'/>"+fila.nombre+"</br>"+fila.apellidos+"</br>"+fila.cargo+"</a></li>").listview('refresh');
+                        console.log("ROW "+i+" nombre: "+fila.nombre);
+                        $("#listaContactos ul").append("<li><a data-id='"+fila.id+"' href='datos.html' data-ajax='false'><img src='./img/iconUser.png' class='imagenLista'><div class='nombreLista' id='nombreUsuario'>"+fila.nombre+"</br>"+fila.apellidos+"</br>"+fila.cargo+"</div></a></li>").listview('refresh');
+                       //Capturamos el elemento cogiendo el id
+                        $("#listaContactos a").click(function(e){
+                            e.preventDefault();
+                            var id = $(this).attr("data-id");
+                            window.localStorage.setItem("id", id);
+                            var href = $(this).attr("href");
+                            document.location.href = href;
+                        });
                     }
                 }
             },
